@@ -18,5 +18,5 @@
 	};
     
     if (!window.FlashWarp)
-        window.FlashWarp = FlashWarp;
+        window.$FlashWarp = FlashWarp;
 }) (window);
