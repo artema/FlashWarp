@@ -7,7 +7,8 @@
     <script type="text/javascript">
         function embedCallback(e)
         {
-            var bind = $FlashWarp("#FlashContent");
+            var bind = $FlashWarp("FlashContent");
+            bind.mapFunction("test", function(i){ alert(i); });
         }
         
         var swfVersionStr = "0";
