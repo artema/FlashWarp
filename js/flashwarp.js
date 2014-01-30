@@ -15,13 +15,13 @@
 
     var flashWarpMap = {};
     
-    var FlashWarp = function (id, command)
+    var FlashWarp = function (id, command, args)
     {        
         var gate = flashWarpMap[id] || (flashWarpMap[id] = new FlashWarpGate(id));
         
         if (command)
         {                  
-            gate[command.operation].apply(gate, command.arguments);
+            gate[command].apply(gate, args);
         }
         
         return gate;
@@ -37,6 +37,11 @@
         {
             this.functionsMap[name] = handler;
             return this;
+        },
+        
+        unmapFunction: function (name)
+        {
+            delete this.functionsMap[name];
         },
         
         execFunction: function (name, args)
