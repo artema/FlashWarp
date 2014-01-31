@@ -8,7 +8,10 @@
         function embedCallback(e)
         {
             var bind = $FlashWarp("FlashContent");
-            bind.mapFunction("test", function(i){ alert(i); });
+            bind.map("test", function(i){ 
+                alert(i); 
+                bind.invoke("test", "Hello Flash");
+            });
         }
         
         var swfVersionStr = "0";
@@ -17,7 +20,7 @@
         var params = {};
         params.quality = "high";
         params.bgcolor = "#ffffff";
-        params.allowscriptaccess = "sameDomain";
+        params.allowscriptaccess = "always";
         var attributes = {};
         attributes.id = "FlashContent";
         attributes.name = "FlashContent";

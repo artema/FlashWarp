@@ -33,20 +33,27 @@
 		flashObject: null,
         functionsMap: null,
         
-        mapFunction: function (name, handler)
-        {
-            this.functionsMap[name] = handler;
-            return this;
-        },
-        
-        unmapFunction: function (name)
-        {
-            delete this.functionsMap[name];
-        },
-        
-        execFunction: function (name, args)
+        exec: function (name, args)
         {
             this.functionsMap[name].call(null, args);
+        },
+        
+        map: function (name, handler)
+        {
+            this.functionsMap[name] = handler;
+        },
+        
+        unmap: function (name)
+        {
+            delete this.functionsMap[name];
+        },      
+        
+        /**
+         * Invoke a remote function.
+         */
+        invoke: function (name, args)
+        {            
+            this.flashObject[name](args);
         }
 	};
     

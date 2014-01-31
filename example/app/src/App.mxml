@@ -1,16 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
-			   xmlns:s="library://ns.adobe.com/flex/spark" minWidth="955" minHeight="600" creationComplete="creationCompleteHandler(event)">
+			   xmlns:s="library://ns.adobe.com/flex/spark" minWidth="955" minHeight="600" initialize="initializeHandler(event)" creationComplete="creationCompleteHandler(event)">
 	<fx:Script>
 		<![CDATA[
 			import mx.events.FlexEvent;
 			
-			protected function creationCompleteHandler(event:FlexEvent):void
+			protected function initializeHandler(event:FlexEvent):void
 			{
-				ExternalInterface.call("$FlashWarp", ExternalInterface.objectID, "execFunction", ["test", "Hello JavaScript"]);
+				try
+				{
+					ExternalInterface.addCallback("test", function(text:String):void{
+						lbl.text = text;
+					});
+				}
+				catch(e:Error)
+				{
+					lbl.text = e.toString();
+				}
 			}
 			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				ExternalInterface.call("$FlashWarp", ExternalInterface.objectID, "exec", ["test", "Hello JavaScript"]);	
+			}		
 		]]>
 	</fx:Script>
-	<s:Label text="Hello World!" />
+	<s:Label id="lbl" />
 </s:Application>
