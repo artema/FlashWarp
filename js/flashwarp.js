@@ -53,7 +53,7 @@
          */
         invoke: function (name, args)
         {            
-            this.flashObject[name](args);
+            this.flashObject.exec(name, args);
         }
 	};
     
