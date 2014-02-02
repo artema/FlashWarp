@@ -15,6 +15,12 @@
 
     var flashWarpMap = {};
     
+    //--------------------------------------------------------------------------
+    //
+    //  FlashWarp
+    //
+    //--------------------------------------------------------------------------
+    
     var FlashWarp = function (id, command, args)
     {        
         var gate = flashWarpMap[id] || (flashWarpMap[id] = new FlashWarpGate(id));
@@ -26,7 +32,31 @@
         
         return gate;
     };
+    
+    //--------------------------------------------------------------------------
+    //
+    //  FlashWarpBinding
+    //
+    //--------------------------------------------------------------------------
 
+    var FlashWarpBinding = function (name)
+    {
+        this.name = name;
+        
+        return this;  
+    };
+    
+    FlashWarpBinding.prototype = 
+    {
+        name: null
+    };
+    
+    //--------------------------------------------------------------------------
+    //
+    //  FlashWarpGate
+    //
+    //--------------------------------------------------------------------------
+    
     FlashWarpGate.prototype =
 	{
         token: null,
@@ -54,6 +84,13 @@
         invoke: function (name, args)
         {            
             this.flashObject.exec(name, args);
+        },
+        
+        bind: function (name)
+        {
+            var binding = new FlashWarpBinding(name);
+            
+            return binding;
         }
 	};
     
