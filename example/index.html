@@ -7,10 +7,19 @@
     <script type="text/javascript">
         function embedCallback(e)
         {
-            var bind = $FlashWarp("FlashContent");
-            bind.map("test", function(i){ 
-                alert(i); 
-                bind.invoke("test", "Hello Flash");
+            var warp = $FlashWarp("FlashContent");
+
+            warp.binding("textfield").addListener(function (value) {
+                document.getElementById("textField").setAttribute("value", value);
+            });
+            
+            document.getElementById("textField").onchange = function (e) {
+                warp.binding("textfield").setValue(this.value);
+            };
+            
+            warp.map("test", function(i){ 
+                //alert(i); 
+                warp.invoke("test", "Hello Flash");
             });
         }
         
@@ -35,5 +44,6 @@
 </head>
 <body>
     <div id="FlashContainer"></div>
+    <input id="textField" />
 </body>
 </html>

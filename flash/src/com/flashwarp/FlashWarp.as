@@ -16,8 +16,10 @@ package com.flashwarp
 			if (!_isAvailable) return;
 			
 			_id = ExternalInterface.objectID;
-			
+
 			ExternalInterface.addCallback("exec", execHandler);
+			
+			doMap("updateBinding", updateBinding);
 		}
 		
 		//--------------------------------------------------------------------------
@@ -85,9 +87,20 @@ package com.flashwarp
 			ExternalInterface.call("$FlashWarp", _id, "exec", parameters);
 		}
 		
-		private function execHandler(name:String, ...parameters):void
+		//--------------------------------------------------------------------------
+		//
+		//  Private methods
+		//
+		//--------------------------------------------------------------------------
+		
+		private function execHandler(name:String, params:Array):void
 		{
-			functionsMap[name].apply(null, parameters);
+			functionsMap[name].apply(null, params);
+		}
+		
+		private function updateBinding(name:String, value:*):void
+		{
+			return;
 		}
 	}
 }

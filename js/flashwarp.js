@@ -9,6 +9,7 @@
         
         this.token = id;
         this.functionsMap = {};
+        this.bindings = {};
         
         return this;
     };
@@ -22,7 +23,7 @@
     //--------------------------------------------------------------------------
     
     var FlashWarp = function (id, command, args)
-    {        
+    {
         var gate = flashWarpMap[id] || (flashWarpMap[id] = new FlashWarpGate(id));
         
         if (command)
@@ -39,16 +40,68 @@
     //
     //--------------------------------------------------------------------------
 
-    var FlashWarpBinding = function (name)
+    var FlashWarpBinding = function (host, name)
     {
+        this.host = host;
         this.name = name;
+        this.listeners = [];
         
         return this;  
     };
     
     FlashWarpBinding.prototype = 
     {
-        name: null
+        host: null,
+        name: null,
+        listeners: null,
+        value: null,
+        
+        addListener: function (handler)
+        {
+            if (this.listeners.indexOf(handler) != -1)
+                return;
+            
+            this.listeners.push(handler);
+        },
+        
+        removeListener: function (handler)
+        {
+            var index = this.listeners.lastIndexOf(handler);
+            
+            if (index == -1)
+                return;
+            
+            this.listeners[index] = null;
+        },
+        
+        setValue: function (value, local)
+        {
+            if (this.value === value)
+                return;
+            
+            this.value = value;
+            
+            for (var i = 0; i < this.listeners.length; i++)
+            {
+                var handler = this.listeners[i];
+                
+                if (!handler)
+                    continue;
+                
+                try
+                {
+                    handler(this.value, this.name);
+                }
+                catch (e)
+                {                    
+                    console.warn(e.name + ": " + e.message);
+                    continue;
+                }
+            }
+            
+            if (!local)
+                this.host.updateBinding(this.name, this.value, true); 
+        }
     };
     
     //--------------------------------------------------------------------------
@@ -62,6 +115,7 @@
         token: null,
 		flashObject: null,
         functionsMap: null,
+        bindings: null,
         
         exec: function (name, args)
         {
@@ -81,16 +135,32 @@
         /**
          * Invoke a remote function.
          */
-        invoke: function (name, args)
+        invoke: function (name)
         {            
+            var args = arguments.length > 1 
+                ? Array.prototype.slice.call(arguments, 1)
+                : undefined;
             this.flashObject.exec(name, args);
         },
-        
-        bind: function (name)
+
+        binding: function (name)
         {
-            var binding = new FlashWarpBinding(name);
+            var bind = this.bindings[name];
             
-            return binding;
+            if (bind)
+                return bind;
+            
+            bind = this.bindings[name] = new FlashWarpBinding(this, name);
+
+            return bind;
+        },
+        
+        updateBinding: function (name, value, propagate)
+        {
+            if (propagate)
+                this.invoke("updateBinding", name, value);                
+            else
+                this.binding(name).setValue(value, true);
         }
 	};
     
