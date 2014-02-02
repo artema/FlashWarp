@@ -6,10 +6,6 @@ package com.flashwarp
 
 	public final class FlashWarp
 	{
-		private static var _instance:FlashWarp = new FlashWarp();
-		
-		public static function get instance():FlashWarp{ return _instance; }
-		
 		public function FlashWarp()
 		{
 			if (_instance != null) 
@@ -24,23 +20,67 @@ package com.flashwarp
 			ExternalInterface.addCallback("exec", execHandler);
 		}
 		
-		private var _id:String;
-		private var _isAvailable:Boolean;
+		//--------------------------------------------------------------------------
+		//
+		//  Public methods
+		//
+		//--------------------------------------------------------------------------
+		
+		public static function map(name:String, handler:Function):void
+		{
+			_instance.doMap(name, handler);			
+		}
+		
+		public static function unmap(name:String):void
+		{
+			_instance.doUnmap(name);
+		}
+		
+		public static function invoke(name:String, ...parameters):void
+		{
+			_instance.doInvoke(name, parameters);
+		}
+		
+		//--------------------------------------------------------------------------
+		//
+		//  Data
+		//
+		//--------------------------------------------------------------------------
+		
+		private static var _instance:FlashWarp = new FlashWarp();
 		
 		private const functionsMap:Dictionary = new Dictionary();
 		
-		public function map(name:String, handler:Function):void
+		private var _id:String;
+		private var _isAvailable:Boolean;
+		
+		//--------------------------------------------------------------------------
+		//
+		//  Instance methods
+		//
+		//--------------------------------------------------------------------------
+		
+		internal function doMap(name:String, handler:Function):void
 		{
+			if (!_isAvailable)
+				throw new IllegalOperationError("External interface is not available.");
+			
 			functionsMap[name] = handler;
 		}
 		
-		public function unmap(name:String):void
+		internal function doUnmap(name:String):void
 		{
+			if (!_isAvailable)
+				throw new IllegalOperationError("External interface is not available.");
+			
 			delete functionsMap[name];
 		}
 		
-		public function invoke(name:String, ...parameters):void
+		internal function doInvoke(name:String, ...parameters):void
 		{	
+			if (!_isAvailable)
+				throw new IllegalOperationError("External interface is not available.");
+			
 			parameters.unshift(name);
 			ExternalInterface.call("$FlashWarp", _id, "exec", parameters);
 		}

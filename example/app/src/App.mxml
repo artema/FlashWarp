@@ -9,14 +9,14 @@
 			
 			protected function initializeHandler(event:FlexEvent):void
 			{
-				FlashWarp.instance.map("test", function(text:String):void{
+				FlashWarp.map("test", function(text:String):void{
 					lbl.text = text;
 				});
 			}
 			
 			protected function creationCompleteHandler(event:FlexEvent):void
 			{
-				FlashWarp.instance.invoke("test", "Hello JavaScript");
+				FlashWarp.invoke("test", "Hello JavaScript");
 			}		
 		]]>
 	</fx:Script>
