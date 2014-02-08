@@ -3,22 +3,35 @@
 			   xmlns:s="library://ns.adobe.com/flex/spark" minWidth="955" minHeight="600" initialize="initializeHandler(event)" creationComplete="creationCompleteHandler(event)">
 	<fx:Script>
 		<![CDATA[
-			import com.flashwarp.FlashWarp;
+			import com.flashwarp.*;
 			
 			import mx.events.FlexEvent;
+			
+			[Bindable]
+			private var bind:IObservable;
+			
+			private function set textValue(value:String):void
+			{
+				
+			}
 			
 			protected function initializeHandler(event:FlexEvent):void
 			{
 				FlashWarp.map("test", function(text:String):void{
-					lbl.text = text;
+					txt.text = text;
 				});
+				
+				bind = FlashWarp.binding("textfield");
 			}
 			
 			protected function creationCompleteHandler(event:FlexEvent):void
 			{
-				FlashWarp.invoke("test", "Hello JavaScript");
+				FlashWarp.invoke("test", [ "Hello JavaScript" ]);
 			}		
 		]]>
 	</fx:Script>
-	<s:Label id="lbl" />
+	
+	<fx:Binding source="bind.value" destination="txt.text" twoWay="true" />
+	
+	<s:TextInput id="txt" />
 </s:Application>

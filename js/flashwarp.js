@@ -10,7 +10,7 @@
         this.token = id;
         this.functionsMap = {};
         this.bindings = {};
-        
+
         return this;
     };
 
@@ -119,7 +119,7 @@
         
         exec: function (name, args)
         {
-            this.functionsMap[name].call(null, args);
+            this.functionsMap[name].apply(null, args);
         },
         
         map: function (name, handler)

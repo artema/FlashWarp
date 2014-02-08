@@ -2,6 +2,9 @@
 <flexLibProperties includeAllClasses="true" useMultiPlatformConfig="false" version="3">
   <includeClasses>
     <classEntry path="com.flashwarp.FlashWarp"/>
+    <classEntry path="com.flashwarp.IObservable"/>
+    <classEntry path="com.flashwarp.ObservableEvent"/>
+    <classEntry path="com.flashwarp.Observable"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

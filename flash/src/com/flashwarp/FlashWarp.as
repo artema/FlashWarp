@@ -38,9 +38,14 @@ package com.flashwarp
 			_instance.doUnmap(name);
 		}
 		
-		public static function invoke(name:String, ...parameters):void
+		public static function invoke(name:String, params:Array):void
 		{
-			_instance.doInvoke(name, parameters);
+			_instance.doInvoke(name, params);
+		}
+		
+		public static function binding(name:String):IObservable
+		{
+			return _instance.doBinding(name);
 		}
 		
 		//--------------------------------------------------------------------------
@@ -52,6 +57,7 @@ package com.flashwarp
 		private static var _instance:FlashWarp = new FlashWarp();
 		
 		private const functionsMap:Dictionary = new Dictionary();
+		private const bidningsMap:Dictionary = new Dictionary();
 		
 		private var _id:String;
 		private var _isAvailable:Boolean;
@@ -78,13 +84,25 @@ package com.flashwarp
 			delete functionsMap[name];
 		}
 		
-		internal function doInvoke(name:String, ...parameters):void
+		internal function doInvoke(name:String, params:Array):void
 		{	
 			if (!_isAvailable)
 				throw new IllegalOperationError("External interface is not available.");
+
+			ExternalInterface.call("$FlashWarp", _id, "exec", [name, params]);
+		}
+		
+		internal function doBinding(name:String):Observable
+		{
+			var observable:Observable = bidningsMap[name] as Observable;
 			
-			parameters.unshift(name);
-			ExternalInterface.call("$FlashWarp", _id, "exec", parameters);
+			if (observable == null)
+			{
+				observable = bidningsMap[name] = new Observable(name);
+				observable.addEventListener(ObservableEvent.CHANGE, onObservableChange);
+			}
+				
+			return observable;
 		}
 		
 		//--------------------------------------------------------------------------
@@ -100,7 +118,13 @@ package com.flashwarp
 		
 		private function updateBinding(name:String, value:*):void
 		{
-			return;
+			doBinding(name).value = value;
+		}
+		
+		private function onObservableChange(e:ObservableEvent):void
+		{
+			var binding:Observable = Observable(e.target);
+			ExternalInterface.call("$FlashWarp", _id, "updateBinding", [ binding.name, binding.value ]);
 		}
 	}
 }
