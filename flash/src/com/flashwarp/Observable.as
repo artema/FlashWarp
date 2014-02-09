@@ -31,6 +31,19 @@ package com.flashwarp
 				
 				var event:ObservableEvent = new ObservableEvent(ObservableEvent.CHANGE);
 				event.value = value;
+				event.propagate = true;
+				dispatchEvent(event);
+			}
+		}
+		
+		internal function setValue(value:*):void
+		{
+			if (value !== _value)
+			{
+				_value = value;
+				
+				var event:ObservableEvent = new ObservableEvent(ObservableEvent.CHANGE);
+				event.value = value;
 				dispatchEvent(event);
 			}
 		}

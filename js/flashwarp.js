@@ -25,13 +25,13 @@
     var FlashWarp = function (id, command, args)
     {
         var gate = flashWarpMap[id] || (flashWarpMap[id] = new FlashWarpGate(id));
-        
+
         if (command)
-        {                  
+        {    
             gate[command].apply(gate, args);
         }
-        
-        return gate;
+        else
+            return gate;
     };
     
     //--------------------------------------------------------------------------
@@ -158,7 +158,7 @@
         updateBinding: function (name, value, propagate)
         {
             if (propagate)
-                this.invoke("updateBinding", name, value);                
+                this.flashObject.updateBinding(name, value);              
             else
                 this.binding(name).setValue(value, true);
         }

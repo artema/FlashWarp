@@ -9,16 +9,17 @@
         {
             var warp = $FlashWarp("FlashContent");
 
+            var txtInput = document.getElementById("textField");
+            
             warp.binding("textfield").addListener(function (value) {
-                document.getElementById("textField").setAttribute("value", value);
+                txtInput.value = value;
             });
             
-            document.getElementById("textField").onchange = function (e) {
+            document.getElementById("textField").onkeyup = function (e) {
                 warp.binding("textfield").setValue(this.value);
             };
             
             warp.map("test", function(i){ 
-                //alert(i); 
                 warp.invoke("test", "Hello Flash");
             });
         }
@@ -44,6 +45,6 @@
 </head>
 <body>
     <div id="FlashContainer"></div>
-    <input id="textField" />
+    <input id="textField" type="text" />
 </body>
 </html>

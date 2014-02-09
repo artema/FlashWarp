@@ -8,30 +8,23 @@
 			import mx.events.FlexEvent;
 			
 			[Bindable]
-			private var bind:IObservable;
-			
-			private function set textValue(value:String):void
-			{
-				
-			}
-			
+			private var binding:IObservable;
+
 			protected function initializeHandler(event:FlexEvent):void
 			{
 				FlashWarp.map("test", function(text:String):void{
 					txt.text = text;
 				});
 				
-				bind = FlashWarp.binding("textfield");
+				binding = FlashWarp.binding("textfield");
 			}
 			
 			protected function creationCompleteHandler(event:FlexEvent):void
 			{
-				FlashWarp.invoke("test", [ "Hello JavaScript" ]);
+				binding.value = "Hello World";
 			}		
 		]]>
 	</fx:Script>
-	
-	<fx:Binding source="bind.value" destination="txt.text" twoWay="true" />
-	
-	<s:TextInput id="txt" />
+
+	<s:TextInput id="txt" text="@{binding.value}" />
 </s:Application>

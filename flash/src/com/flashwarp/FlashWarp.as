@@ -18,8 +18,7 @@ package com.flashwarp
 			_id = ExternalInterface.objectID;
 
 			ExternalInterface.addCallback("exec", execHandler);
-			
-			doMap("updateBinding", updateBinding);
+			ExternalInterface.addCallback("updateBinding", updateBindingHandler);
 		}
 		
 		//--------------------------------------------------------------------------
@@ -116,13 +115,16 @@ package com.flashwarp
 			functionsMap[name].apply(null, params);
 		}
 		
-		private function updateBinding(name:String, value:*):void
+		private function updateBindingHandler(name:String, value:*):void
 		{
-			doBinding(name).value = value;
+			doBinding(name).setValue(value);
 		}
 		
 		private function onObservableChange(e:ObservableEvent):void
 		{
+			if (!e.propagate)
+				return;
+			
 			var binding:Observable = Observable(e.target);
 			ExternalInterface.call("$FlashWarp", _id, "updateBinding", [ binding.name, binding.value ]);
 		}

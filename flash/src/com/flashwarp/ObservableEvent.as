@@ -18,10 +18,13 @@ package com.flashwarp
 		
 		public var value:*;
 		
+		internal var propagate:Boolean;
+		
 		override public function clone():Event
 		{
 			var event:ObservableEvent = new ObservableEvent(type, bubbles, cancelable);
 			event.value = value;
+			event.propagate = propagate;
 			return event;
 		}
 	}
