@@ -4,6 +4,11 @@ package com.flashwarp
 	import flash.external.ExternalInterface;
 	import flash.utils.Dictionary;
 
+	/**
+	 * JavaScript-Flash bridge.
+	 * 
+	 * @author Artem Abashev
+	 */
 	public final class FlashWarp
 	{
 		public function FlashWarp()
@@ -27,21 +32,44 @@ package com.flashwarp
 		//
 		//--------------------------------------------------------------------------
 		
+		/**
+		 * Declare function as available from JavaScript by the name.
+		 * 
+		 * @param name Function mapping alias.
+		 * @param handler Function to map.
+		 */
 		public static function map(name:String, handler:Function):void
 		{
 			_instance.doMap(name, handler);			
 		}
 		
+		/**
+		 * Remove function mapping.
+		 * 
+		 * @param name Existing function mapping alias.
+		 */
 		public static function unmap(name:String):void
 		{
 			_instance.doUnmap(name);
 		}
 		
-		public static function invoke(name:String, params:Array):void
+		/**
+		 * Invoke mapped JavaScript function by its name with the provided parameters.
+		 * 
+		 * @param name JavaScript function mapping name.
+		 * @params Optional parameters list.
+		 */
+		public static function invoke(name:String, params:Array = null):void
 		{
 			_instance.doInvoke(name, params);
 		}
 		
+		/**
+		 * Get observable value for a JavaScript-Flash binding. 
+		 * If no binding exists with the provided name, it will be created automatically.
+		 * 
+		 * @param name Binding alias.
+		 */
 		public static function binding(name:String):IObservable
 		{
 			return _instance.doBinding(name);
@@ -52,6 +80,8 @@ package com.flashwarp
 		//  Data
 		//
 		//--------------------------------------------------------------------------
+		
+		private static const JAVASCRIPT_ENDPOINT:String = "$FlashWarp";
 		
 		private static var _instance:FlashWarp = new FlashWarp();
 		
@@ -72,6 +102,11 @@ package com.flashwarp
 			if (!_isAvailable)
 				throw new IllegalOperationError("External interface is not available.");
 			
+			if (!isValidAlias(name)) throw new ArgumentError("name");
+
+			if (functionsMap[name])
+				throw new IllegalOperationError("Mapping with alias '" + name + "' already exists.");
+			
 			functionsMap[name] = handler;
 		}
 		
@@ -80,19 +115,34 @@ package com.flashwarp
 			if (!_isAvailable)
 				throw new IllegalOperationError("External interface is not available.");
 			
+			if (!isValidAlias(name)) throw new ArgumentError("name");
+			
+			if (!functionsMap[name])
+				throw new IllegalOperationError("Mapping with alias '" + name + "' does not exist.");
+			
 			delete functionsMap[name];
 		}
 		
-		internal function doInvoke(name:String, params:Array):void
+		internal function doInvoke(name:String, params:Array = null):void
 		{	
 			if (!_isAvailable)
 				throw new IllegalOperationError("External interface is not available.");
 
-			ExternalInterface.call("$FlashWarp", _id, "exec", [name, params]);
+			if (!isValidAlias(name)) throw new ArgumentError("name");
+			
+			if (params == null)
+				params = [];
+			
+			ExternalInterface.call(JAVASCRIPT_ENDPOINT, _id, "exec", [name, params]);
 		}
 		
 		internal function doBinding(name:String):Observable
 		{
+			if (!_isAvailable)
+				throw new IllegalOperationError("External interface is not available.");
+			
+			if (!isValidAlias(name)) throw new ArgumentError("name");
+			
 			var observable:Observable = bidningsMap[name] as Observable;
 			
 			if (observable == null)
@@ -106,17 +156,27 @@ package com.flashwarp
 		
 		//--------------------------------------------------------------------------
 		//
-		//  Private methods
+		//  Event handlers
 		//
 		//--------------------------------------------------------------------------
 		
-		private function execHandler(name:String, params:Array):void
+		private function execHandler(name:String, params:Array = null):void
 		{
+			if (!isValidAlias(name)) throw new ArgumentError("name");
+			
+			if (!functionsMap[name])
+				throw new IllegalOperationError("Mapping with alias '" + name + "' does not exist.");
+			
+			if (params == null)
+				params = [];
+			
 			functionsMap[name].apply(null, params);
 		}
 		
 		private function updateBindingHandler(name:String, value:*):void
 		{
+			if (!isValidAlias(name)) throw new ArgumentError("name");
+			
 			doBinding(name).setValue(value);
 		}
 		
@@ -126,7 +186,18 @@ package com.flashwarp
 				return;
 			
 			var binding:Observable = Observable(e.target);
-			ExternalInterface.call("$FlashWarp", _id, "updateBinding", [ binding.name, binding.value ]);
+			ExternalInterface.call(JAVASCRIPT_ENDPOINT, _id, "updateBinding", [ binding.name, binding.value ]);
+		}
+		
+		//--------------------------------------------------------------------------
+		//
+		//  Helper methods
+		//
+		//--------------------------------------------------------------------------
+		
+		private static function isValidAlias(name:String):Boolean
+		{
+			return (name != null && name != "");
 		}
 	}
 }
