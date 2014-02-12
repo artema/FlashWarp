@@ -164,6 +164,6 @@
         }
 	};
     
-    if (!window.FlashWarp)
+    if (!window.$FlashWarp)
         window.$FlashWarp = FlashWarp;
 }) (window);
