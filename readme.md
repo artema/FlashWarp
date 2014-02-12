@@ -32,3 +32,29 @@ You can also define bindings between Flash and JavaScript. Once its value is cha
       txtInput.onkeyup = function (e) {
           warp.binding("textfield").setValue(this.value);
       };
+
+It is even simplier on the Flash side:
+
+      [Bindable] private var binding:IObservable;
+
+      private function initializeHandler(event:FlexEvent):void
+      {
+      	FlashWarp.map("hello", function(text:String):void{
+      		Alert.show(text, "Message from HTML");
+      	});
+      	
+      	binding = FlashWarp.binding("textfield");
+      }
+      
+      private function creationCompleteHandler(event:FlexEvent):void
+      {
+      	binding.value = "Hello World";
+      }		
+      
+      private function clickHanlder(event:MouseEvent):void
+      {
+      	FlashWarp.invoke("hello", [ txt.text ]);
+      }
+      
+      <s:TextInput id="txt" text="@{binding.value}" /> <!-- Two-way binding -->
+      <s:Button label="Call HTML" click="clickHanlder(event)" />
