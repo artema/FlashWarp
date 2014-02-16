@@ -119,7 +119,7 @@
         
         exec: function (name, args)
         {
-            this.functionsMap[name].apply(null, args);
+            return this.functionsMap[name].apply(null, args);
         },
         
         map: function (name, handler)
@@ -140,7 +140,7 @@
             var args = arguments.length > 1 
                 ? Array.prototype.slice.call(arguments, 1)
                 : undefined;
-            this.flashObject.exec(name, args);
+            return this.flashObject.exec(name, args);
         },
 
         binding: function (name)

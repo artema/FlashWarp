@@ -59,9 +59,9 @@ package com.flashwarp
 		 * @param name JavaScript function mapping name.
 		 * @params Optional parameters list.
 		 */
-		public static function invoke(name:String, params:Array = null):void
+		public static function invoke(name:String, params:Array = null):*
 		{
-			_instance.doInvoke(name, params);
+			return _instance.doInvoke(name, params);
 		}
 		
 		/**
@@ -123,7 +123,7 @@ package com.flashwarp
 			delete functionsMap[name];
 		}
 		
-		internal function doInvoke(name:String, params:Array = null):void
+		internal function doInvoke(name:String, params:Array = null):*
 		{	
 			if (!_isAvailable)
 				throw new IllegalOperationError("External interface is not available.");
@@ -133,7 +133,7 @@ package com.flashwarp
 			if (params == null)
 				params = [];
 			
-			ExternalInterface.call(JAVASCRIPT_ENDPOINT, _id, "exec", [name, params]);
+			return ExternalInterface.call(JAVASCRIPT_ENDPOINT, _id, "exec", [name, params]);
 		}
 		
 		internal function doBinding(name:String):Observable
@@ -160,7 +160,7 @@ package com.flashwarp
 		//
 		//--------------------------------------------------------------------------
 		
-		private function execHandler(name:String, params:Array = null):void
+		private function execHandler(name:String, params:Array = null):*
 		{
 			if (!isValidAlias(name)) throw new ArgumentError("name");
 			
@@ -170,7 +170,7 @@ package com.flashwarp
 			if (params == null)
 				params = [];
 			
-			functionsMap[name].apply(null, params);
+			return functionsMap[name].apply(null, params);
 		}
 		
 		private function updateBindingHandler(name:String, value:*):void
