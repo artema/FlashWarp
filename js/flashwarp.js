@@ -24,10 +24,16 @@
     
     var FlashWarp = function (id, command, args)
     {
+        if (command == "dispose")
+        {
+            delete flashWarpMap[id];
+            return;
+        }
+        
         var gate = flashWarpMap[id] || (flashWarpMap[id] = new FlashWarpGate(id));
 
         if (command)
-        {    
+        {
             gate[command].apply(gate, args);
         }
         else
