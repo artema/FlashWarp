@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark"
+			   initialize="initializeHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import com.flashwarp.*;
+			
+			import mx.events.FlexEvent;
+
+			private function initializeHandler(event:FlexEvent):void
+			{
+				FlashWarp.map("test_a_1", function(text:String):String{
+					return "echo: " + text;
+				});
+				
+				FlashWarp.map("test_a_2", function(text1:String, text2:String):String{
+					return "echo: " + text1 + ", " + text2;
+				});
+				
+				FlashWarp.map("test_a_3", function():void{
+					return;
+				});
+				
+				FlashWarp.map("test_a_4", function(values:Array):String{
+					return values.join(", ");
+				});
+				
+				FlashWarp.map("test_a_5", function(value:*):Object{
+					if (value !== null)
+						throw new ArgumentError();
+					
+					return null;
+				});
+				
+				FlashWarp.map("test_a_6", function():void{
+					throw new Error("Illegal operation");
+				});
+				
+				FlashWarp.invoke("ready");
+			}	
+		]]>
+	</fx:Script>
+
+</s:Application>
