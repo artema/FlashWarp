@@ -124,3 +124,51 @@
             start();
         });
     });
+
+    //--------------------------------------------------------------------------
+    //
+    //  Object tests
+    //
+    //--------------------------------------------------------------------------
+
+    asyncTest("Object test: null argument & no return value", function()
+    {
+        expect(2);
+
+        embedFlash("app/bin/FlashWarpTests.swf", function() {
+            ok(true, "Application started");
+
+            var result = $FlashWarp(EMBEDDED_FLASH_ID).invoke("test_b_1", null);
+
+            strictEqual(result, undefined, "Result is valid");
+            start();
+        });
+    });
+
+    asyncTest("Object test: basic argument & same return value", function()
+    {
+        expect(2);
+
+        embedFlash("app/bin/FlashWarpTests.swf", function() {
+            ok(true, "Application started");
+
+            var result = $FlashWarp(EMBEDDED_FLASH_ID).invoke("test_b_2", { msg: "Hello" });
+
+            strictEqual(result.msg, "Hello World", "Result is valid");
+            start();
+        });
+    });
+
+    asyncTest("Object test: complex argument & same return value", function()
+    {
+        expect(2);
+
+        embedFlash("app/bin/FlashWarpTests.swf", function() {
+            ok(true, "Application started");
+
+            var result = $FlashWarp(EMBEDDED_FLASH_ID).invoke("test_b_3", { msg1: { value: "Hello" }, msg2: { value: "World" } });
+
+            strictEqual(result.msg1.value + result.msg2.value, "Hello World", "Result is valid");
+            start();
+        });
+    });

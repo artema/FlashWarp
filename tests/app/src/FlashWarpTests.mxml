@@ -10,6 +10,10 @@
 
 			private function initializeHandler(event:FlexEvent):void
 			{
+				//--------------------------------------
+				//  Function invokation tests
+				//--------------------------------------
+				
 				FlashWarp.map("test_a_1", function(text:String):String{
 					return "echo: " + text;
 				});
@@ -35,6 +39,24 @@
 				
 				FlashWarp.map("test_a_6", function():void{
 					throw new Error("Illegal operation");
+				});
+				
+				//--------------------------------------
+				//  Object tests
+				//--------------------------------------
+				
+				FlashWarp.map("test_b_1", function(obj:Object):void{
+					return;
+				});
+				
+				FlashWarp.map("test_b_2", function(obj:Object):Object{
+					obj.msg += " World";
+					return obj;
+				});
+				
+				FlashWarp.map("test_b_3", function(obj:Object):Object{
+					obj.msg2.value = " " + obj.msg2.value;
+					return obj;
 				});
 				
 				FlashWarp.invoke("ready");
