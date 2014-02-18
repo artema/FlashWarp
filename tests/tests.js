@@ -172,3 +172,107 @@
             start();
         });
     });
+
+    //--------------------------------------------------------------------------
+    //
+    //  Primitives tests
+    //
+    //--------------------------------------------------------------------------
+
+    asyncTest("Primitives: boolean", function()
+    {
+        expect(2);
+
+        embedFlash("app/bin/FlashWarpTests.swf", function() {
+            ok(true, "Application started");
+
+            var result = $FlashWarp(EMBEDDED_FLASH_ID).invoke("test_c_1", true);
+
+            strictEqual(result, true, "Result is valid");
+            start();
+        });
+    });
+
+    asyncTest("Primitives: negative integer", function()
+    {
+        expect(2);
+
+        embedFlash("app/bin/FlashWarpTests.swf", function() {
+            ok(true, "Application started");
+
+            var result = $FlashWarp(EMBEDDED_FLASH_ID).invoke("test_c_2", -1);
+
+            strictEqual(result, -2, "Result is valid");
+            start();
+        });
+    });
+
+    asyncTest("Primitives: unsigned integer", function()
+    {
+        expect(2);
+
+        embedFlash("app/bin/FlashWarpTests.swf", function() {
+            ok(true, "Application started");
+
+            var result = $FlashWarp(EMBEDDED_FLASH_ID).invoke("test_c_3", 100);
+
+            strictEqual(result, 100, "Result is valid");
+            start();
+        });
+    });
+
+    asyncTest("Primitives: largest positive integer", function()
+    {
+        expect(2);
+
+        embedFlash("app/bin/FlashWarpTests.swf", function() {
+            ok(true, "Application started");
+
+            var result = $FlashWarp(EMBEDDED_FLASH_ID).invoke("test_c_4", 2147483647);
+
+            strictEqual(result, 2147483647, "Result is valid");
+            start();
+        });
+    });
+
+    asyncTest("Primitives: smallest negative integer", function()
+    {
+        expect(2);
+
+        embedFlash("app/bin/FlashWarpTests.swf", function() {
+            ok(true, "Application started");
+
+            var result = $FlashWarp(EMBEDDED_FLASH_ID).invoke("test_c_4", -2147483648);
+
+            strictEqual(result, -2147483648, "Result is valid");
+            start();
+        });
+    });
+
+    asyncTest("Primitives: largest positive unsigned integer", function()
+    {
+        expect(2);
+
+        embedFlash("app/bin/FlashWarpTests.swf", function() {
+            ok(true, "Application started");
+
+            var result = $FlashWarp(EMBEDDED_FLASH_ID).invoke("test_c_3", 4294967295);
+
+            strictEqual(result, 4294967295, "Result is valid");
+            start();
+        });
+    });
+
+    asyncTest("Primitives: number", function()
+    {
+        expect(2);
+
+        embedFlash("app/bin/FlashWarpTests.swf", function() {
+            ok(true, "Application started");
+
+            var result = $FlashWarp(EMBEDDED_FLASH_ID).invoke("test_c_5", -100.01);
+
+            strictEqual(result, -100.01, "Result is valid");
+            start();
+        });
+    });

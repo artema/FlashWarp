@@ -59,6 +59,30 @@
 					return obj;
 				});
 				
+				//--------------------------------------
+				//  Primitives tests
+				//--------------------------------------
+				
+				FlashWarp.map("test_c_1", function(val:Boolean):Boolean{
+					return val;
+				});
+				
+				FlashWarp.map("test_c_2", function(val:int):int{
+					return val - 1;
+				});
+				
+				FlashWarp.map("test_c_3", function(val:uint):uint{
+					return val;
+				});
+				
+				FlashWarp.map("test_c_4", function(val:int):int{
+					return val;
+				});
+				
+				FlashWarp.map("test_c_5", function(val:Number):Number{
+					return val;
+				});
+				
 				FlashWarp.invoke("ready");
 			}	
 		]]>
