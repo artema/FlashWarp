@@ -1,2 +1,7 @@
+.DS_Store
 .settings
+
+dist
 bin
+
+node_modules
