@@ -31,6 +31,10 @@ THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH RE
     //
     //--------------------------------------------------------------------------
     
+    /**
+     * Get or create a flash wrapper.
+     * @param {string} id ID of the flash object.
+     */
     var FlashWarp = function (id, command, args)
     {
         if (command == "dispose")
@@ -71,6 +75,10 @@ THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH RE
         listeners: null,
         value: null,
         
+        /**
+         * Add a value change listener to the binding.
+         * @param {function} handler Handler function.
+         */
         addListener: function (handler)
         {
             if (this.listeners.indexOf(handler) != -1)
@@ -79,6 +87,10 @@ THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH RE
             this.listeners.push(handler);
         },
         
+        /**
+         * Remove a value change listener from the binding.
+         * @param {function} handler Handler function.
+         */
         removeListener: function (handler)
         {
             var index = this.listeners.lastIndexOf(handler);
@@ -89,6 +101,11 @@ THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH RE
             this.listeners[index] = null;
         },
         
+        /**
+         * Set new value.
+         * @param {object} value Value to set.
+         * @param {boolean} Apply change only to the local side of the binding.
+         */
         setValue: function (value, local)
         {
             if (this.value === value)
@@ -132,16 +149,30 @@ THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH RE
         functionsMap: null,
         bindings: null,
         
+        /**
+         * Execute a function of this mapper.
+         * @param {string} name Alias name.
+         * @param {array} args Function arguments.
+         */
         exec: function (name, args)
         {
             return this.functionsMap[name].apply(null, args);
         },
         
+        /**
+         * Create named function mapping.
+         * @param {string} name Alias name.
+         * @param {function} handler Handler function.
+         */
         map: function (name, handler)
         {
             this.functionsMap[name] = handler;
         },
         
+        /**
+         * Remove named function mapping.
+         * @param {string} name Alias name.
+         */
         unmap: function (name)
         {
             delete this.functionsMap[name];
@@ -149,6 +180,7 @@ THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH RE
         
         /**
          * Invoke a remote function.
+         * @param {string} name Function alias.
          */
         invoke: function (name)
         {            
@@ -158,6 +190,10 @@ THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH RE
             return this.flashObject.exec(name, args);
         },
 
+        /**
+         * Create a named binding.
+         * @param {string} name Binding alias.
+         */
         binding: function (name)
         {
             var bind = this.bindings[name];
@@ -170,6 +206,12 @@ THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH RE
             return bind;
         },
         
+        /**
+         * Update binding value.
+         * @param {string} name Binding alias.
+         * @param {object} value New value.
+         * @param {boolean} propagate Propagate new value to the other side of the binding.
+         */
         updateBinding: function (name, value, propagate)
         {
             if (propagate)

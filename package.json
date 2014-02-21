@@ -26,9 +26,11 @@
   },
   "homepage": "https://github.com/artema/FlashWarp",
   "devDependencies": {
-    "grunt":         				"~0.4.2",
-	"grunt-contrib-uglify":         "*",
-	"grunt-contrib-watch":          "*",
-	"matchdep":                     "*"
+    "grunt": "~0.4.2",
+    "grunt-contrib-uglify": "*",
+    "grunt-contrib-watch": "*",
+    "matchdep": "*",
+    "jsdoc": "<=3.3.0",
+    "grunt-jsdoc": "~0.5.1"
   }
 }

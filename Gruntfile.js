@@ -2,6 +2,7 @@ module.exports = function(grunt) {
 	
   "use strict";
   require("matchdep").filterDev("grunt-*").forEach(grunt.loadNpmTasks);
+  require("grunt-jsdoc");
 
   // Project configuration.
   grunt.initConfig({
@@ -15,6 +16,14 @@ module.exports = function(grunt) {
         dest: 'dist/flashwarp.min.js'
       }	  
     },
+	jsdoc : {
+		dist : {
+	    	src: ['js/*.js'], 
+	        options: {
+	            destination: 'doc'
+	        }
+	    }
+	},
 	watch: {
 		js: {
 			files: ['js/flashwarp.js'],
@@ -23,6 +32,5 @@ module.exports = function(grunt) {
  	}
   });
 
-  // Default task(s).
-  grunt.registerTask('default', ['uglify']);
+  grunt.registerTask('default', ['uglify', 'jsdoc']);
 };
