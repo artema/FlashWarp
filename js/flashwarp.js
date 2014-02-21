@@ -7,51 +7,51 @@ Permission to use, copy, modify, and/or distribute this software for any purpose
 THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 */
 
-'use strict';
-
-(function (window) {
+(function () {
+    'use strict';
+    
     var FlashWarpGate = function (id) {
         this.flashObject = window.document.getElementById(id);
 
-        if (!this.flashObject)
-            throw new Error("Element " + id + " not found");
+        if (!this.flashObject) {
+            throw "Element " + id + " not found";
+        }
         
         this.token = id;
         this.functionsMap = {};
         this.bindings = {};
 
         return this;
-    };
+    },
+        
+        flashWarpMap = {},
 
-    var flashWarpMap = {};
-    
     //--------------------------------------------------------------------------
     //
     //  FlashWarp
     //
     //--------------------------------------------------------------------------
-    
-    /**
-     * Get or create a flash wrapper.
-     * @param {string} id ID of the flash object.
-     */
-    var FlashWarp = function (id, command, args)
-    {
-        if (command == "dispose")
-        {
-            delete flashWarpMap[id];
-            return;
-        }
-        
-        var gate = flashWarpMap[id] || (flashWarpMap[id] = new FlashWarpGate(id));
 
-        if (command)
-        {
-            gate[command].apply(gate, args);
-        }
-        else
-            return gate;
-    };
+        /**
+         * Get or create a flash wrapper.
+         * @param {string} id ID of the flash object.
+         */
+        FlashWarp = function (id, command, args) {
+            if (command === "dispose") {
+                delete flashWarpMap[id];
+                return;
+            }
+
+            var gate = flashWarpMap[id] || (flashWarpMap[id] = new FlashWarpGate(id));
+
+            if (command) {
+                gate[command].apply(gate, args);
+            } else {
+                return gate;
+            }
+            
+            return null;
+        },
     
     //--------------------------------------------------------------------------
     //
@@ -59,17 +59,15 @@ THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH RE
     //
     //--------------------------------------------------------------------------
 
-    var FlashWarpBinding = function (host, name)
-    {
-        this.host = host;
-        this.name = name;
-        this.listeners = [];
-        
-        return this;  
-    };
+        FlashWarpBinding = function (host, name) {
+            this.host = host;
+            this.name = name;
+            this.listeners = [];
+
+            return this;
+        };
     
-    FlashWarpBinding.prototype = 
-    {
+    FlashWarpBinding.prototype = {
         host: null,
         name: null,
         listeners: null,
@@ -79,10 +77,10 @@ THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH RE
          * Add a value change listener to the binding.
          * @param {function} handler Handler function.
          */
-        addListener: function (handler)
-        {
-            if (this.listeners.indexOf(handler) != -1)
+        addListener: function (handler) {
+            if (this.listeners.indexOf(handler) !== -1) {
                 return;
+            }
             
             this.listeners.push(handler);
         },
@@ -91,12 +89,12 @@ THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH RE
          * Remove a value change listener from the binding.
          * @param {function} handler Handler function.
          */
-        removeListener: function (handler)
-        {
+        removeListener: function (handler) {
             var index = this.listeners.lastIndexOf(handler);
             
-            if (index == -1)
+            if (index === -1) {
                 return;
+            }
             
             this.listeners[index] = null;
         },
@@ -106,33 +104,31 @@ THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH RE
          * @param {object} value Value to set.
          * @param {boolean} Apply change only to the local side of the binding.
          */
-        setValue: function (value, local)
-        {
-            if (this.value === value)
+        setValue: function (value, local) {
+            if (this.value === value) {
                 return;
+            }
             
             this.value = value;
-            
-            for (var i = 0; i < this.listeners.length; i++)
-            {
+
+            for (var i = 0; i < this.listeners.length; i++) {
                 var handler = this.listeners[i];
                 
-                if (!handler)
+                if (!handler) {
                     continue;
-                
-                try
-                {
-                    handler(this.value, this.name);
                 }
-                catch (e)
-                {                    
+                
+                try {
+                    handler(this.value, this.name);
+                } catch (e) {
                     console.warn(e.name + ": " + e.message);
                     continue;
                 }
             }
             
-            if (!local)
-                this.host.updateBinding(this.name, this.value, true); 
+            if (!local) {
+                this.host.updateBinding(this.name, this.value, true);
+            }
         }
     };
     
@@ -142,8 +138,7 @@ THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH RE
     //
     //--------------------------------------------------------------------------
     
-    FlashWarpGate.prototype =
-	{
+    FlashWarpGate.prototype = {
         token: null,
 		flashObject: null,
         functionsMap: null,
@@ -154,8 +149,7 @@ THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH RE
          * @param {string} name Alias name.
          * @param {array} args Function arguments.
          */
-        exec: function (name, args)
-        {
+        exec: function (name, args) {
             return this.functionsMap[name].apply(null, args);
         },
         
@@ -164,8 +158,7 @@ THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH RE
          * @param {string} name Alias name.
          * @param {function} handler Handler function.
          */
-        map: function (name, handler)
-        {
+        map: function (name, handler) {
             this.functionsMap[name] = handler;
         },
         
@@ -173,18 +166,16 @@ THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH RE
          * Remove named function mapping.
          * @param {string} name Alias name.
          */
-        unmap: function (name)
-        {
+        unmap: function (name) {
             delete this.functionsMap[name];
-        },      
+        },
         
         /**
          * Invoke a remote function.
          * @param {string} name Function alias.
          */
-        invoke: function (name)
-        {            
-            var args = arguments.length > 1 
+        invoke: function (name) {
+            var args = arguments.length > 1
                 ? Array.prototype.slice.call(arguments, 1)
                 : undefined;
             return this.flashObject.exec(name, args);
@@ -194,12 +185,12 @@ THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH RE
          * Create a named binding.
          * @param {string} name Binding alias.
          */
-        binding: function (name)
-        {
+        binding: function (name) {
             var bind = this.bindings[name];
             
-            if (bind)
+            if (bind) {
                 return bind;
+            }
             
             bind = this.bindings[name] = new FlashWarpBinding(this, name);
 
@@ -212,15 +203,16 @@ THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH RE
          * @param {object} value New value.
          * @param {boolean} propagate Propagate new value to the other side of the binding.
          */
-        updateBinding: function (name, value, propagate)
-        {
-            if (propagate)
-                this.flashObject.updateBinding(name, value);              
-            else
+        updateBinding: function (name, value, propagate) {
+            if (propagate) {
+                this.flashObject.updateBinding(name, value);
+            } else {
                 this.binding(name).setValue(value, true);
+            }
         }
 	};
     
-    if (!window.$FlashWarp)
+    if (!window.$FlashWarp) {
         window.$FlashWarp = FlashWarp;
-}) (window);
+    }
+})();
