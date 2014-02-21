@@ -83,6 +83,20 @@
 					return val;
 				});
 				
+				//--------------------------------------
+				//  Array tests
+				//--------------------------------------
+				
+				FlashWarp.map("test_d_1", function(list:Array):Array{
+					list.push("World");
+					return list;
+				});
+				
+				FlashWarp.map("test_d_2", function(list:Array):Array{
+					list.push([ "World" ]);
+					return list;
+				});
+				
 				FlashWarp.invoke("ready");
 			}	
 		]]>

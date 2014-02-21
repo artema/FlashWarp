@@ -276,3 +276,37 @@
             start();
         });
     });
+
+    //--------------------------------------------------------------------------
+    //
+    //  Array tests
+    //
+    //--------------------------------------------------------------------------
+
+    asyncTest("Arrays: manipulation", function()
+    {
+        expect(2);
+
+        embedFlash("app/bin/FlashWarpTests.swf", function() {
+            ok(true, "Application started");
+
+            var result = $FlashWarp(EMBEDDED_FLASH_ID).invoke("test_d_1", ["Hello"]);
+
+            strictEqual(result.join(" "), "Hello World", "Result is valid");
+            start();
+        });
+    });
+
+    asyncTest("Arrays: complex", function()
+    {
+        expect(2);
+
+        embedFlash("app/bin/FlashWarpTests.swf", function() {
+            ok(true, "Application started");
+
+            var result = $FlashWarp(EMBEDDED_FLASH_ID).invoke("test_d_2", ["Hello"]);
+
+            strictEqual(result[1][0], "World", "Result is valid");
+            start();
+        });
+    });
