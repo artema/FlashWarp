@@ -1,15 +1,17 @@
 {
   "name": "FlashWarp",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Flash-JavaScript bridge on steroids.",
   "directories": {
     "example": "example",
-    "test": "tests",
+    "tests": "tests",
     "flash": "flash",
-    "js": "js"
+    "js": "js",
+    "dist": "dist",
+    "docs": "docs"
   },
   "scripts": {
-    "test": "exit 1"
+    "test": "grunt test"
   },
   "repository": {
     "type": "git",
@@ -29,8 +31,13 @@
     "grunt": "~0.4.2",
     "grunt-contrib-uglify": "*",
     "grunt-contrib-watch": "*",
+    "grunt-contrib-jshint": "*",
     "matchdep": "*",
-    "jsdoc": "<=3.3.0",
-    "grunt-jsdoc": "~0.5.1"
+    "jsdoc": "~3.3.0",
+    "grunt-jsdoc": "~0.5.4",
+    "flex-sdk": "~4.6.0",
+    "grunt-mxmlc": "~0.5.0",
+    "grunt-compc": "~0.9.0",
+    "grunt-asdoc": "~0.1.0"
   }
 }

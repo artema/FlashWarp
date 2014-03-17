@@ -1,9 +1,8 @@
 .DS_Store
 .settings
 
-dist
 bin
-out
-doc
+bin-debug
+bin-release
 
 node_modules

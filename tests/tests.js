@@ -1,7 +1,15 @@
+/*jslint browser: true*/
+
+/*global $FlashWarp */
+/*global swfobject */
+/*global QUnit */
+/*global $ */
+
     'use strict';
 
     var TEST_FIXTURE_ID = "qunit-fixture";
     var EMBEDDED_FLASH_ID = "flash-content";
+    var TEST_RUNNER_URL = "app/bin/App.swf";
 
     function embedFlash(swfUrl, callback)
     {
@@ -39,89 +47,89 @@
     //
     //--------------------------------------------------------------------------
 
-    asyncTest("Function invokation: single argument & return value", function()
+    QUnit.asyncTest("Function invokation: single argument & return value", function()
     {
-        expect(2);
+        QUnit.expect(2);
 
-        embedFlash("app/bin/FlashWarpTests.swf", function() {
-            ok(true, "Application started");
+        embedFlash(TEST_RUNNER_URL, function() {
+            QUnit.ok(true, "Application started");
 
             var result = $FlashWarp(EMBEDDED_FLASH_ID).invoke("test_a_1", "Hello World");
 
-            strictEqual(result, "echo: Hello World", "Echo result is valid");
-            start();
+            QUnit.strictEqual(result, "echo: Hello World", "Echo result is valid");
+            QUnit.start();
         });
     });
 
-    asyncTest("Function invokation: multiple arguments & return value", function()
+    QUnit.asyncTest("Function invokation: multiple arguments & return value", function()
     {
-        expect(2);
+        QUnit.expect(2);
 
-        embedFlash("app/bin/FlashWarpTests.swf", function() {
-            ok(true, "Application started");
+        embedFlash(TEST_RUNNER_URL, function() {
+            QUnit.ok(true, "Application started");
 
             var result = $FlashWarp(EMBEDDED_FLASH_ID).invoke("test_a_2", "Hello", "World");
 
-            strictEqual(result, "echo: Hello, World", "Result is valid");
-            start();
+            QUnit.strictEqual(result, "echo: Hello, World", "Result is valid");
+            QUnit.start();
         });
     });
 
-    asyncTest("Function invokation: no arguments & no return value", function()
+    QUnit.asyncTest("Function invokation: no arguments & no return value", function()
     {
-        expect(2);
+        QUnit.expect(2);
 
-        embedFlash("app/bin/FlashWarpTests.swf", function() {
-            ok(true, "Application started");
+        embedFlash(TEST_RUNNER_URL, function() {
+            QUnit.ok(true, "Application started");
 
             var result = $FlashWarp(EMBEDDED_FLASH_ID).invoke("test_a_3");
 
-            strictEqual(result, undefined, "Result is valid");
-            start();
+            QUnit.strictEqual(result, undefined, "Result is valid");
+            QUnit.start();
         });
     });
 
-    asyncTest("Function invokation: array argument & return value", function()
+    QUnit.asyncTest("Function invokation: array argument & return value", function()
     {
-        expect(2);
+        QUnit.expect(2);
 
-        embedFlash("app/bin/FlashWarpTests.swf", function() {
-            ok(true, "Application started");
+        embedFlash(TEST_RUNNER_URL, function() {
+            QUnit.ok(true, "Application started");
 
             var result = $FlashWarp(EMBEDDED_FLASH_ID).invoke("test_a_4", ["Hello", "World"]);
 
-            strictEqual(result, "Hello, World", "Result is valid");
-            start();
+            QUnit.strictEqual(result, "Hello, World", "Result is valid");
+            QUnit.start();
         });
     });
 
-    asyncTest("Function invokation: null argument & null return value", function()
+    QUnit.asyncTest("Function invokation: null argument & null return value", function()
     {
-        expect(2);
+        QUnit.expect(2);
 
-        embedFlash("app/bin/FlashWarpTests.swf", function() {
-            ok(true, "Application started");
+        embedFlash(TEST_RUNNER_URL, function() {
+            QUnit.ok(true, "Application started");
 
             var result = $FlashWarp(EMBEDDED_FLASH_ID).invoke("test_a_5", null);
 
-            strictEqual(result, null, "Result is valid");
-            start();
+            QUnit.strictEqual(result, null, "Result is valid");
+            QUnit.start();
         });
     });
 
-    asyncTest("Function invokation: error expected", function()
+    QUnit.asyncTest("Function invokation: error expected", function()
     {
-        expect(2);
+        QUnit.expect(2);
 
-        embedFlash("app/bin/FlashWarpTests.swf", function() {
-            ok(true, "Application started");
+        embedFlash(TEST_RUNNER_URL, function() {
+            QUnit.ok(true, "Application started");
 
-            throws( function() {
+            QUnit.throws( function() {
                 $FlashWarp(EMBEDDED_FLASH_ID).invoke("test_a_6");
             },
             "Function throws an error");
 
-            start();
+            QUnit.start();
         });
     });
 
@@ -131,45 +139,45 @@
     //
     //--------------------------------------------------------------------------
 
-    asyncTest("Object test: null argument & no return value", function()
+    QUnit.asyncTest("Object test: null argument & no return value", function()
     {
-        expect(2);
+        QUnit.expect(2);
 
-        embedFlash("app/bin/FlashWarpTests.swf", function() {
-            ok(true, "Application started");
+        embedFlash(TEST_RUNNER_URL, function() {
+            QUnit.ok(true, "Application started");
 
             var result = $FlashWarp(EMBEDDED_FLASH_ID).invoke("test_b_1", null);
 
-            strictEqual(result, undefined, "Result is valid");
-            start();
+            QUnit.strictEqual(result, undefined, "Result is valid");
+            QUnit.start();
         });
     });
 
-    asyncTest("Object test: basic argument & same return value", function()
+    QUnit.asyncTest("Object test: basic argument & same return value", function()
     {
-        expect(2);
+        QUnit.expect(2);
 
-        embedFlash("app/bin/FlashWarpTests.swf", function() {
-            ok(true, "Application started");
+        embedFlash(TEST_RUNNER_URL, function() {
+            QUnit.ok(true, "Application started");
 
             var result = $FlashWarp(EMBEDDED_FLASH_ID).invoke("test_b_2", { msg: "Hello" });
 
-            strictEqual(result.msg, "Hello World", "Result is valid");
-            start();
+            QUnit.strictEqual(result.msg, "Hello World", "Result is valid");
+            QUnit.start();
         });
     });
 
-    asyncTest("Object test: complex argument & same return value", function()
+    QUnit.asyncTest("Object test: complex argument & same return value", function()
     {
-        expect(2);
+        QUnit.expect(2);
 
-        embedFlash("app/bin/FlashWarpTests.swf", function() {
-            ok(true, "Application started");
+        embedFlash(TEST_RUNNER_URL, function() {
+            QUnit.ok(true, "Application started");
 
             var result = $FlashWarp(EMBEDDED_FLASH_ID).invoke("test_b_3", { msg1: { value: "Hello" }, msg2: { value: "World" } });
 
-            strictEqual(result.msg1.value + result.msg2.value, "Hello World", "Result is valid");
-            start();
+            QUnit.strictEqual(result.msg1.value + result.msg2.value, "Hello World", "Result is valid");
+            QUnit.start();
         });
     });
 
@@ -179,101 +187,101 @@
     //
     //--------------------------------------------------------------------------
 
-    asyncTest("Primitives: boolean", function()
+    QUnit.asyncTest("Primitives: boolean", function()
     {
-        expect(2);
+        QUnit.expect(2);
 
-        embedFlash("app/bin/FlashWarpTests.swf", function() {
-            ok(true, "Application started");
+        embedFlash(TEST_RUNNER_URL, function() {
+            QUnit.ok(true, "Application started");
 
             var result = $FlashWarp(EMBEDDED_FLASH_ID).invoke("test_c_1", true);
 
-            strictEqual(result, true, "Result is valid");
-            start();
+            QUnit.strictEqual(result, true, "Result is valid");
+            QUnit.start();
         });
     });
 
-    asyncTest("Primitives: negative integer", function()
+    QUnit.asyncTest("Primitives: negative integer", function()
     {
-        expect(2);
+        QUnit.expect(2);
 
-        embedFlash("app/bin/FlashWarpTests.swf", function() {
-            ok(true, "Application started");
+        embedFlash(TEST_RUNNER_URL, function() {
+            QUnit.ok(true, "Application started");
 
             var result = $FlashWarp(EMBEDDED_FLASH_ID).invoke("test_c_2", -1);
 
-            strictEqual(result, -2, "Result is valid");
-            start();
+            QUnit.strictEqual(result, -2, "Result is valid");
+            QUnit.start();
         });
     });
 
-    asyncTest("Primitives: unsigned integer", function()
+    QUnit.asyncTest("Primitives: unsigned integer", function()
     {
-        expect(2);
+        QUnit.expect(2);
 
-        embedFlash("app/bin/FlashWarpTests.swf", function() {
-            ok(true, "Application started");
+        embedFlash(TEST_RUNNER_URL, function() {
+            QUnit.ok(true, "Application started");
 
             var result = $FlashWarp(EMBEDDED_FLASH_ID).invoke("test_c_3", 100);
 
-            strictEqual(result, 100, "Result is valid");
-            start();
+            QUnit.strictEqual(result, 100, "Result is valid");
+            QUnit.start();
         });
     });
 
-    asyncTest("Primitives: largest positive integer", function()
+    QUnit.asyncTest("Primitives: largest positive integer", function()
     {
-        expect(2);
+        QUnit.expect(2);
 
-        embedFlash("app/bin/FlashWarpTests.swf", function() {
-            ok(true, "Application started");
+        embedFlash(TEST_RUNNER_URL, function() {
+            QUnit.ok(true, "Application started");
 
             var result = $FlashWarp(EMBEDDED_FLASH_ID).invoke("test_c_4", 2147483647);
 
-            strictEqual(result, 2147483647, "Result is valid");
-            start();
+            QUnit.strictEqual(result, 2147483647, "Result is valid");
+            QUnit.start();
         });
     });
 
-    asyncTest("Primitives: smallest negative integer", function()
+    QUnit.asyncTest("Primitives: smallest negative integer", function()
     {
-        expect(2);
+        QUnit.expect(2);
 
-        embedFlash("app/bin/FlashWarpTests.swf", function() {
-            ok(true, "Application started");
+        embedFlash(TEST_RUNNER_URL, function() {
+            QUnit.ok(true, "Application started");
 
             var result = $FlashWarp(EMBEDDED_FLASH_ID).invoke("test_c_4", -2147483648);
 
-            strictEqual(result, -2147483648, "Result is valid");
-            start();
+            QUnit.strictEqual(result, -2147483648, "Result is valid");
+            QUnit.start();
         });
     });
 
-    asyncTest("Primitives: largest positive unsigned integer", function()
+    QUnit.asyncTest("Primitives: largest positive unsigned integer", function()
     {
-        expect(2);
+        QUnit.expect(2);
 
-        embedFlash("app/bin/FlashWarpTests.swf", function() {
-            ok(true, "Application started");
+        embedFlash(TEST_RUNNER_URL, function() {
+            QUnit.ok(true, "Application started");
 
             var result = $FlashWarp(EMBEDDED_FLASH_ID).invoke("test_c_3", 4294967295);
 
-            strictEqual(result, 4294967295, "Result is valid");
-            start();
+            QUnit.strictEqual(result, 4294967295, "Result is valid");
+            QUnit.start();
         });
     });
 
-    asyncTest("Primitives: number", function()
+    QUnit.asyncTest("Primitives: number", function()
     {
-        expect(2);
+        QUnit.expect(2);
 
-        embedFlash("app/bin/FlashWarpTests.swf", function() {
-            ok(true, "Application started");
+        embedFlash(TEST_RUNNER_URL, function() {
+            QUnit.ok(true, "Application started");
 
             var result = $FlashWarp(EMBEDDED_FLASH_ID).invoke("test_c_5", -100.01);
 
-            strictEqual(result, -100.01, "Result is valid");
-            start();
+            QUnit.strictEqual(result, -100.01, "Result is valid");
+            QUnit.start();
         });
     });
 
@@ -283,30 +291,30 @@
     //
     //--------------------------------------------------------------------------
 
-    asyncTest("Arrays: manipulation", function()
+    QUnit.asyncTest("Arrays: manipulation", function()
     {
-        expect(2);
+        QUnit.expect(2);
 
-        embedFlash("app/bin/FlashWarpTests.swf", function() {
-            ok(true, "Application started");
+        embedFlash(TEST_RUNNER_URL, function() {
+            QUnit.ok(true, "Application started");
 
             var result = $FlashWarp(EMBEDDED_FLASH_ID).invoke("test_d_1", ["Hello"]);
 
-            strictEqual(result.join(" "), "Hello World", "Result is valid");
-            start();
+            QUnit.strictEqual(result.join(" "), "Hello World", "Result is valid");
+            QUnit.start();
         });
     });
 
-    asyncTest("Arrays: complex", function()
+    QUnit.asyncTest("Arrays: complex", function()
     {
-        expect(2);
+        QUnit.expect(2);
 
-        embedFlash("app/bin/FlashWarpTests.swf", function() {
-            ok(true, "Application started");
+        embedFlash(TEST_RUNNER_URL, function() {
+            QUnit.ok(true, "Application started");
 
             var result = $FlashWarp(EMBEDDED_FLASH_ID).invoke("test_d_2", ["Hello"]);
 
-            strictEqual(result[1][0], "World", "Result is valid");
-            start();
+            QUnit.strictEqual(result[1][0], "World", "Result is valid");
+            QUnit.start();
         });
     });
