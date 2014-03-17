@@ -1,0 +1,31 @@
+{
+  "name": "FlashWarp",
+  "version": "1.0.0",
+  "homepage": "https://github.com/artema/FlashWarp",
+  "authors": [
+    "Artem Abashev <artem@abashev.com>"
+  ],
+  "description": "FlashWarp is a Flash-JavaScript bridge on steroids. It makes Flash components integration fast and seamless. It allows you not only to call remote functions, but also to bind to remote values, just like in Flex.",
+  "main": "dist/flashwarp.min.js",
+  "keywords": [
+    "flash",
+    "flex",
+    "javascript",
+    "actionscript",
+    "externalinterface",
+    "as3",
+    "swf",
+    "bridge"
+  ],
+  "license": "ISC",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "docs",
+    "example",
+    "tests",
+    "flash",
+    "js"
+  ]
+}
