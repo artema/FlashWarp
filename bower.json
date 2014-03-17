@@ -20,6 +20,8 @@
   "license": "ISC",
   "ignore": [
     "**/.*",
+    "Gruntfile.js",
+    "package.json",
     "node_modules",
     "bower_components",
     "docs",
