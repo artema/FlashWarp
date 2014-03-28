@@ -56,11 +56,6 @@ module.exports = function(grunt) {
             options: {
                 rawConfig: '-library-path+=dist'
             },
-            example: {
-                files: {
-                    'example/app/bin/App.swf': ['example/app/src/App.mxml']
-                }
-            },
             test: {
                 files: {
                     'tests/app/bin/App.swf': ['tests/app/src/App.mxml']
