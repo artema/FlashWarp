@@ -1,3 +1,13 @@
+## Binaries
+
+      bower install FlashWarp
+
+or
+
+[https://github.com/artema/FlashWarp/releases](https://github.com/artema/FlashWarp/releases)
+
+## Usage Example
+
 Consider the following code:
 
       <object id="FlashContent"></object>
