@@ -58,3 +58,7 @@ It is even simplier on the Flash side:
       
       <s:TextInput id="txt" text="@{binding.value}" /> <!-- Two-way binding -->
       <s:Button label="Call HTML" click="clickHanlder(event)" />
+
+## Example project
+
+See [FlashWarp example project](https://github.com/artema/flash-warp-example) and [this blog post](http://abashev.com/flashwarp-library/) for more details.
